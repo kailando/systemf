@@ -39,7 +39,7 @@ jobs:
     container:
       image: debian:stable-slim
     steps:
-      - name: Install git, make, nasm
+      - name: Install git, make and nasm
         run: apt-get update && apt-get install -y git make nasm
 
       - name: Checkout code
