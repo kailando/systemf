@@ -1,0 +1,90 @@
+name: Build and Release Binaries
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  build-ubuntu:
+    name: Build on Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: sudo apt-get update && sudo apt-get install -y make nasm
+
+      - name: Build project
+        run: make clean build
+
+      - name: Archive binaries
+        run: |
+          mkdir -p dist
+          cp -r bin dist/
+          tar -czvf systemf-${{ github.ref_name }}-ubuntu.tar.gz -C dist bin
+
+      - name: Upload Release Asset (Ubuntu)
+        uses: softprops/action-gh-release@v2
+        with:
+          files: systemf-${{ github.ref_name }}-ubuntu.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-debian:
+    name: Build on Debian (Docker)
+    runs-on: ubuntu-latest
+    container:
+      image: debian:stable-slim
+    steps:
+      - name: Install git, make, nasm
+        run: apt-get update && apt-get install -y git make nasm
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build project
+        run: make clean build
+
+      - name: Archive binaries
+        run: |
+          mkdir -p dist
+          cp -r bin dist/
+          tar -czvf systemf-${{ github.ref_name }}-debian.tar.gz -C dist bin
+
+      - name: Upload Release Asset (Debian)
+        uses: softprops/action-gh-release@v2
+        with:
+          files: systemf-${{ github.ref_name }}-debian.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-arch:
+    name: Build on Arch/Manjaro (Docker)
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:base
+    steps:
+      - name: Install git, make, nasm
+        run: pacman -Sy --noconfirm git make nasm
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build project
+        run: make clean build
+
+      - name: Archive binaries
+        run: |
+          mkdir -p dist
+          cp -r bin dist/
+          tar -czvf systemf-${{ github.ref_name }}-arch.tar.gz -C dist bin
+
+      - name: Upload Release Asset (Arch/Manjaro)
+        uses: softprops/action-gh-release@v2
+        with:
+          files: systemf-${{ github.ref_name }}-arch.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
