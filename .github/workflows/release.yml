@@ -5,6 +5,11 @@ on:
     tags:
       - 'v*.*.*'
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag'
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -107,7 +112,7 @@ jobs:
             artifacts/systemf-arch/systemf-arch.tar.gz
             artifacts/systemf-debian/systemf-debian.tar.gz
             artifacts/systemf-ubuntu/systemf-ubuntu.tar.gz
-          tag_name: "${{ github.ref_name }}"
+          tag_name: "${{ inputs.tag || github.ref_name }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
