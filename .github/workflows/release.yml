@@ -24,12 +24,13 @@ jobs:
         run: |
           mkdir -p dist
           cp -r bin dist/
-          tar -czvf systemf-${{ github.ref_name }}-ubuntu.tar.gz -C dist bin
+          tar -czvf systemf-${{ github.ref_name }}.tar.gz -C dist bin
 
       - name: Upload Release Asset (Ubuntu)
         uses: softprops/action-gh-release@v3
         with:
-          files: systemf-${{ github.ref_name }}-ubuntu.tar.gz
+          files: systemf-${{ github.ref_name }}.tar.gz
+          tag_name: "ubuntu-release"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -52,12 +53,13 @@ jobs:
         run: |
           mkdir -p dist
           cp -r bin dist/
-          tar -czvf systemf-${{ github.ref_name }}-debian.tar.gz -C dist bin
+          tar -czvf systemf-${{ github.ref_name }}.tar.gz -C dist bin
 
       - name: Upload Release Asset (Debian)
         uses: softprops/action-gh-release@v3
         with:
-          files: systemf-${{ github.ref_name }}-debian.tar.gz
+          files: systemf-${{ github.ref_name }}.tar.gz
+          tag_name: "debian-release"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -80,11 +82,12 @@ jobs:
         run: |
           mkdir -p dist
           cp -r bin dist/
-          tar -czvf systemf-${{ github.ref_name }}-arch.tar.gz -C dist bin
+          tar -czvf systemf-${{ github.ref_name }}.tar.gz -C dist bin
 
       - name: Upload Release Asset (Arch/Manjaro)
         uses: softprops/action-gh-release@v3
         with:
-          files: systemf-${{ github.ref_name }}-arch.tar.gz
+          files: systemf-${{ github.ref_name }}.tar.gz
+          tag_name: "arch-release"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
