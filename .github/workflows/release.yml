@@ -6,6 +6,9 @@ on:
       - 'v*.*.*'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build-ubuntu:
     name: Build on Ubuntu
@@ -29,7 +32,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v7.0.1
         with:
-          name: systemf-ubuntu.tar.gz
+          name: systemf-ubuntu
           path: systemf-ubuntu.tar.gz
           if-no-files-found: error
 
@@ -56,7 +59,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v7.0.1
         with:
-          name: systemf-debian.tar.gz
+          name: systemf-debian
           path: systemf-debian.tar.gz
           if-no-files-found: error
 
@@ -67,7 +70,7 @@ jobs:
       image: archlinux:base
     steps:
       - name: Install git, make, nasm
-        run: pacman -Sy --noconfirm git make nasm
+        run: pacman -Syu --noconfirm git make nasm
 
       - name: Checkout code
         uses: actions/checkout@v6
@@ -84,7 +87,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v7.0.1
         with:
-          name: systemf-arch.tar.gz
+          name: systemf-arch
           path: systemf-arch.tar.gz
           if-no-files-found: error
 
@@ -94,14 +97,17 @@ jobs:
     needs: [build-arch, build-debian, build-ubuntu]
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v3.1.0
+        uses: actions/download-artifact@v4
         with:
-          name: systemf-arch.tar.gz systemf-debian.tar.gz systemf-ubuntu.tar.gz
+          path: artifacts
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v3
         with:
-          files: systemf-arch.tar.gz systemf-debian.tar.gz systemf-ubuntu.tar.gz
-          tag_name: "release-v${{ github.ref_name }}"
+          files: |
+            artifacts/systemf-arch/systemf-arch.tar.gz
+            artifacts/systemf-debian/systemf-debian.tar.gz
+            artifacts/systemf-ubuntu/systemf-ubuntu.tar.gz
+          tag_name: "${{ github.ref_name }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
