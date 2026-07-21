@@ -101,7 +101,7 @@ jobs:
         with:
           path: artifacts
       - name: Upload Release Assets
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@v3.1
         with:
           files: |
             artifacts/systemf-arch/systemf-arch.tar.gz
