@@ -40,7 +40,7 @@ jobs:
       image: debian:stable-slim
     steps:
       - name: Install git, make and nasm
-        run: apt-get update && apt-get install -y git make nasm
+        run: apt-get update && apt-get install -y git make nasm build-essential
 
       - name: Checkout code
         uses: actions/checkout@v4
