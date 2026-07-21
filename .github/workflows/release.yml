@@ -30,7 +30,7 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           files: systemf-${{ github.ref_name }}.tar.gz
-          tag_name: "ubuntu-release"
+          tag_name: "ubuntu-release-v${{ github.ref_name }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -59,7 +59,7 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           files: systemf-${{ github.ref_name }}.tar.gz
-          tag_name: "debian-release"
+          tag_name: "debian-release-v${{ github.ref_name }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -88,6 +88,6 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           files: systemf-${{ github.ref_name }}.tar.gz
-          tag_name: "arch-release"
+          tag_name: "arch-release-v${{ github.ref_name }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
