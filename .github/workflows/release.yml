@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7.0.1
 
       - name: Install build dependencies
         run: sudo apt-get update && sudo apt-get install -y make nasm
@@ -46,7 +46,7 @@ jobs:
         run: apt-get update && apt-get install -y git make nasm build-essential
 
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7.0.1
 
       - name: Build project
         run: make clean build
@@ -73,7 +73,7 @@ jobs:
         run: pacman -Syu --noconfirm git make nasm
 
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7.0.1
 
       - name: Build project
         run: make clean build
@@ -97,11 +97,11 @@ jobs:
     needs: [build-arch, build-debian, build-ubuntu]
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8.0.1
         with:
           path: artifacts
       - name: Upload Release Assets
-        uses: softprops/action-gh-release@v3.1
+        uses: softprops/action-gh-release@v3.0.2
         with:
           files: |
             artifacts/systemf-arch/systemf-arch.tar.gz
