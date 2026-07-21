@@ -24,15 +24,14 @@ jobs:
         run: |
           mkdir -p dist
           cp -r bin dist/
-          tar -czvf systemf-${{ github.ref_name }}.tar.gz -C dist bin
+          tar -czvf systemf-ubuntu.tar.gz -C dist bin
 
-      - name: Upload Release Asset (Ubuntu)
-        uses: softprops/action-gh-release@v3
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7.0.1
         with:
-          files: systemf-${{ github.ref_name }}.tar.gz
-          tag_name: "ubuntu-release-v${{ github.ref_name }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: systemf-ubuntu.tar.gz
+          path: systemf-ubuntu.tar.gz
+          if-no-files-found: error
 
   build-debian:
     name: Build on Debian (Docker)
@@ -53,15 +52,13 @@ jobs:
         run: |
           mkdir -p dist
           cp -r bin dist/
-          tar -czvf systemf-${{ github.ref_name }}.tar.gz -C dist bin
-
-      - name: Upload Release Asset (Debian)
-        uses: softprops/action-gh-release@v3
+          tar -czvf systemf-debian.tar.gz -C dist bin
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7.0.1
         with:
-          files: systemf-${{ github.ref_name }}.tar.gz
-          tag_name: "debian-release-v${{ github.ref_name }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: systemf-debian.tar.gz
+          path: systemf-debian.tar.gz
+          if-no-files-found: error
 
   build-arch:
     name: Build on Arch/Manjaro (Docker)
@@ -82,12 +79,29 @@ jobs:
         run: |
           mkdir -p dist
           cp -r bin dist/
-          tar -czvf systemf-${{ github.ref_name }}.tar.gz -C dist bin
+          tar -czvf systemf-arch.tar.gz -C dist bin
 
-      - name: Upload Release Asset (Arch/Manjaro)
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: systemf-arch.tar.gz
+          path: systemf-arch.tar.gz
+          if-no-files-found: error
+
+  release:
+    name: Upload releases
+    runs-on: ubuntu-latest
+    needs: [build-arch, build-debian, build-ubuntu]
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3.1.0
+        with:
+          name: systemf-arch.tar.gz systemf-debian.tar.gz systemf-ubuntu.tar.gz
+      - name: Upload Release Assets
         uses: softprops/action-gh-release@v3
         with:
-          files: systemf-${{ github.ref_name }}.tar.gz
-          tag_name: "arch-release-v${{ github.ref_name }}"
+          files: systemf-arch.tar.gz systemf-debian.tar.gz systemf-ubuntu.tar.gz
+          tag_name: "release-v${{ github.ref_name }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
