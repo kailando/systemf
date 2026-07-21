@@ -27,7 +27,7 @@ jobs:
           tar -czvf systemf-${{ github.ref_name }}-ubuntu.tar.gz -C dist bin
 
       - name: Upload Release Asset (Ubuntu)
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: systemf-${{ github.ref_name }}-ubuntu.tar.gz
         env:
@@ -55,7 +55,7 @@ jobs:
           tar -czvf systemf-${{ github.ref_name }}-debian.tar.gz -C dist bin
 
       - name: Upload Release Asset (Debian)
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: systemf-${{ github.ref_name }}-debian.tar.gz
         env:
@@ -83,7 +83,7 @@ jobs:
           tar -czvf systemf-${{ github.ref_name }}-arch.tar.gz -C dist bin
 
       - name: Upload Release Asset (Arch/Manjaro)
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: systemf-${{ github.ref_name }}-arch.tar.gz
         env:
